@@ -1,0 +1,85 @@
+import System.Environment -- access to arguments etc.
+
+import Helpers
+
+hoPred :: (a -> Bool) -> ((a,a) -> Bool) -> [a] -> Bool
+hoPred p1 p2 []    = True
+hoPred p1 p2 [x]   = p1 x
+hoPred p1 p2 [x,y] = p2 (x,y)
+hoPred p1 p2 (x : y : zs) = (p2 (x,y)) && (hoPred p1 p2 (y : zs))
+
+zeroes :: Integral a =>  [a] -> Bool
+zeroes = hoPred (\x -> x == 0) (\(x,y) -> x == 0 && y == 0)
+
+same :: Eq a => [a] -> Bool
+same =  hoPred (\x -> True) (\(x,y) -> x == y)
+
+sorted :: Ord a => [a] -> Bool
+sorted = hoPred (\x -> True) (\(x,y) -> x <= y)
+
+allTrue :: Integral a =>  [a] -> Bool
+-- allTrue = hoPred (\x -> (x > 0)) (\(x,y) -> (x+y > 0))
+allTrue = hoPred (\x -> True) (\(x,y) -> True)
+
+-------------------------
+-- maximal segment sum --
+-------------------------
+emss :: Integral a => [a] -> (a,a,a,a)
+emss xs =
+    let mssop (mssx, misx, mcsx, tsx)
+              (mssy, misy, mcsy, tsy) =
+          ( mssx `max` mssy `max`  (mcsx + misy),
+            misx `max` (tsx+misy),
+            mcsy `max` (mcsx+tsy),
+            tsx + tsy )
+        f x = (x `max` 0, x `max` 0, x `max` 0, x)
+    in ((reduce mssop (0,0,0,0)) . (map f)) xs
+
+mss :: Integral a => [a] -> a
+mss xs =  let first (x,_,_,_) = x
+          in  first (emss xs)
+
+--------------------------------------
+-- Longest Satisfying Segment       --
+-- ASSIGNMENT 1: fill in the blanks --
+--       See lecture notes          --
+--------------------------------------
+
+elss :: Integral a => ([a] -> Bool) -> [a] -> (a,a,a,a,a,a)
+elss p xs =
+    let -- lssop :: Integral a => (a,a,a,a,a,a) -> (a,a,a,a,a,a) -> (a,a,a,a,a,a)
+        lssop (lssx, lisx, lcsx, tlx, firstx, lastx)
+              (lssy, lisy, lcsy, tly, firsty, lasty) =
+          (newlss, newlis, newlcs, tlx+tly, first, last)
+                where
+                  connect = p[lastx, firsty] -- ... fill in the blanks (rewrite this line) ... should use p
+                  newlss  = if connect then (lcsx + lisy) `max` lssx `max` lssy else lssx `max` lssy     -- ... fill in the blanks (rewrite this line)
+                  newlis  = if connect then lssx +lisy else lisx     -- ... fill in the blanks (rewrite this line)
+                  newlcs  = if connect then lcsx + lcsy else lcsy     -- ... fill in the blanks (rewrite this line)
+                  first   = if tlx == 0 then firsty else firstx
+                  last    = if tly == 0 then lastx  else lasty
+        f x = (xmatch, xmatch, xmatch, 1, x, x)
+                  where xmatch = if (p [x]) then 1 else 0
+    in ((reduce lssop (0,0,0,0,0,0)) . (map f)) xs
+
+lss :: Integral a => ([a] -> Bool) -> [a] -> a
+lss p xs = let first (x,_,_,_,_,_) = x
+           in  first (elss p xs)
+
+
+----------------------------------------
+--- MAIN                             ---
+----------------------------------------
+-- runhaskell LongestSatSgm.hs
+main :: IO()
+main = do args <- getArgs
+          let inp :: [Int]
+              inp = if null args then [1,-2,3,4,-1,5,-6,1] else read (head args)
+              resZeroes = lss zeroes  inp
+              resSame   = lss same    inp
+              resSorted = lss sorted  inp
+              resMss    = mss         inp
+          putStrLn ("Result zeroes: " ++ show resZeroes)
+          putStrLn ("Result same  : " ++ show resSame  )
+          putStrLn ("Result sorted: " ++ show resSorted)
+          putStrLn ("Result mss   : " ++ show resMss)
