@@ -48,7 +48,8 @@ int main(int argc, char** arigv) {
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed1 = t_diff.tv_sec*1e6+t_diff.tv_usec;
 	printf("Serial Mapping took %d microseconds (%.2fms)\n",elapsed1,elapsed1/1000.0);
-	//Parallel Mapping
+
+    //Parallel Mapping
 	float* d_in;
 	float* d_out;
 	cudaMalloc((void**)&d_in, mem_size);
