@@ -191,5 +191,5 @@ int main(int argc, char** argv) {
     scanIncTest(true);
     scanIncTest(false);
     scanExclTest(false);
-    scanIncTest(true);
+    scanExclTest(true);
 }
