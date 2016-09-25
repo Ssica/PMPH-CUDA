@@ -172,7 +172,7 @@ void scanExcl(const unsigned int block_size,
     d_size / block_size + 1 ;
     
     T* scanInc_res;
-    cudaMalloc((void**) &scanInc_res, d_size*sizeOf(T));
+    cudaMalloc((void**) &scanInc_res, d_size*sizeof(T));
     scanInc<OP,T>(block_size, d_size, d_in, scanInc_res);
     //shift it
     shiftRightByOne<T><<<num_blocks, block_size>>>(scanInc_res, d_out, OP::identity(), d_size);
@@ -193,7 +193,7 @@ void sgmScanExcl(const unsigned int block_size,
     d_size / block_size + 1 ;
     
     T* sgmScanInc_res;
-    cudaMalloc((void**) &sgmScanInc_res, d_size*sizeOf(T));
+    cudaMalloc((void**) &sgmScanInc_res, d_size*sizeof(T));
     sgmScanInc<OP,T>(block_size, d_size, d_in, flags, sgmScanInc_res);
     //shift it
     sgmShiftRightByOne<T><<<num_blocks, block_size>>>(scanInc_res, flags, d_out, OP::identity(), d_size);
