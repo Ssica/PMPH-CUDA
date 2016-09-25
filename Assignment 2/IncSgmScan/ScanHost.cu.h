@@ -160,4 +160,23 @@ void sgmScanInc( const unsigned int  block_size,
     cudaFree(f_rec_in );
     cudaFree(f_inds   );
 }
+template<class OP, class T>
+void scanExcl(const unsigned int block_size,
+              const unsigned long d_size,
+              T* d_in,
+              T* d_out){
+    unsigned int num_blocks;
+    
+    num_blocks = ( (d_size % block_size) == 0) ?
+    d_size / block_size     :
+    d_size / block_size + 1 ;
+    
+    T* scanInc_res;
+    cudaMalloc((void**) &scanInc_res, d_size*sizeOf(T));
+    scanInc<OP,T>(block_size, d_size, d_in, scanInc_res);
+    //shift it
+    shiftRightByOne<T><<<num_blocks, block_size>>>(scanInc_res, d_out, OP::identity(), d_size);
+    cudaThreadSynchronize();
+    cudeFree(scanInc_res);
+}
 #endif //SCAN_HOST
