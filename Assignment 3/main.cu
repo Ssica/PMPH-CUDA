@@ -79,7 +79,7 @@ int main() {
 	printf("Task1c transpose test: %lu microseconds.\n", elapsed);
 
 	printf("Task1c transpose test:\n");
-	validate(m1,m2,ROWS,COLS, 0.01);
+	validate(m1,m3,ROWS,COLS, 0.01);
 
 	return 0;
 }
