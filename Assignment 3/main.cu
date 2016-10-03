@@ -60,12 +60,12 @@ int main() {
 	init_mat(m1,size);
 
 	float* d1;
-	cudaMalloc((void**)&d_in,mem_size);
+	cudaMalloc((void**)&d1,mem_size);
 
 	float* d2;
-	cudaMalloc((void**)&d_out,mem_size);
+	cudaMalloc((void**)&d2,mem_size);
 
-	cudaMemcpy(d_in,m1,mem_size,cudaMemcpyHostToDevice);
+	cudaMemcpy(d1,m1,mem_size,cudaMemcpyHostToDevice);
 	gettimeofday(&t_start,NULL);
 
 	task1c_trans<float,TILE>(d1,d2,ROWS,COLS,1);
@@ -80,6 +80,6 @@ int main() {
 
 	printf("Task1c transpose test:\n");
 	validate(m1,m2,ROWS,COLS, 0.01);
-	
+
 	return 0;
 }
