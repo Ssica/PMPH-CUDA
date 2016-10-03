@@ -14,7 +14,7 @@ int timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval 
 }
 
 //used to validate the test run
-void validate(float* mat1, float* mat2, int rows, int cols, float eps) {
+bool validate(float* mat1, float* mat2, int rows, int cols, float eps) {
 	bool valid = true;
 	for (int i = 0; i < rows; i++) {
 		if (!valid) { break; }
@@ -30,8 +30,7 @@ void validate(float* mat1, float* mat2, int rows, int cols, float eps) {
 		}
 	}
 	
-	if (valid) { printf("\n Result from test valid\n"); }
-	else { printf("\n Result from test invalid\n"); }
+    return valid
 }
 
 //initialize matrix

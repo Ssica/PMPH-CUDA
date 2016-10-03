@@ -30,6 +30,7 @@ void task1d_trans(float* in_, float* out_, int rows, int cols) {
 }
 
 int main() {
+	bool val;
 	size_t size = COLS * ROWS;
 	size_t mem_size = sizeof(float) * size;
 	float* m1 = (float*) malloc(mem_size);
@@ -38,7 +39,6 @@ int main() {
 
 	srand(time(0));
   init_mat(m1,size);
-
 	//TEST TASK 1.a
 
 	unsigned long int elapsed;
@@ -53,10 +53,9 @@ int main() {
 
 	printf("Task1a transpose test: %lu microseconds.\n", elapsed);
 
-	printf("Task1a transpose test:\n");
-	validate(m1,m2,ROWS,COLS, 0.01);
-
-	//TEST TASK 1.C
+	val = validate(m1,m2,ROWS,COLS, 0.01);
+	printf("Task1a transpose test: %d", val);
+	//TEST TASK 1.c
 
 	init_mat(m1,size);
 
@@ -79,11 +78,10 @@ int main() {
 
 	printf("Task1c transpose test: %lu microseconds.\n", elapsed);
 
-	printf("Task1c transpose test:\n");
-	validate(m1,m3,ROWS,COLS, 0.01);
+	val = validate(m1,m3,ROWS,COLS, 0.01);
+	printf("Task1c transpose test: %d", val);
 
-
-	//TEST TASK 1.C
+	//TEST TASK 1.d
 
 	init_mat(m1,size);
 
@@ -104,8 +102,29 @@ int main() {
 
 	printf("Task1d transpose test: %lu microseconds.\n", elapsed);
 
-	printf("Task1d transpose test:\n");
-	validate(m1,m3,ROWS,COLS, 0.01);
+	val = validate(m1,m3,ROWS,COLS, 0.01);
+	printf("Task1d transpose test: %d", val);
+	//TEST Task 2.c
 
+	int num_threads = (ROWS/64)*COLS;
+	int block = 256;
+	int grid = num_threads / block;
+
+	init_mat(m1,size);
+	cudaMemcpy(d1,m1,mem_size,cudaMemcpyHostToDevice);
+	gettimeofday(&t_start,NULL);
+	orig_program<<<grid,block>>>(d1,d2,num_threads);
+	cudaThreadSynchronize();
+	gettimeofday(&t_end,NULL);
+	timeval_subtract(&t_diff,&t_end,&t_start);
+	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
+
+	cudaMemcpy(m3,d2,mem_size,cudaMemcpyDeviceToHost);
+	printf("Task 2c transpose test: %lu microseconds.\n", elapsed);
+	cudaFree(m1);
+	cudaFree(m2);
+	cudaFree(m3);
+	cudaFree(d1);
+	cudaFree(d2);
 	return 0;
 }
