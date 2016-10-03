@@ -1,8 +1,10 @@
 #include "help.h"
 #include "task1a.h"
+#include "task1c.cu.h"
+#include "task1d.cu.h"
 
-#define ROWS 8192
-#define COLS 8192
+#define ROWS 1024
+#define COLS 1024
 #define TILE 32
 
 int main() {
@@ -15,7 +17,7 @@ int main() {
 	srand(time(0));
   init_mat(m1,size);
 
-	//SEQUENTIAL TRANSPOSE
+	//TEST TASK 1.a
 
 	unsigned long int elapsed;
 	struct timeval t_start,t_end,t_diff;
