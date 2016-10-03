@@ -19,11 +19,14 @@ void validate(float* mat1, float* mat2, int rows, int cols) {
 	for (int i = 0; i < rows; i++) {
 		if (!valid) { break; }
 		for (int j = 0; j < cols; j++) {
-			if (abs(mat1[i*cols+j] - mat2[i*cols+j])) {
-				valid = false;
-				printf("Failts at: row: %d, col: %d, ",i,j);
-				break;
-			} 
+			if (mat1[i*cols+j] == mat2[i*cols+j]) {
+                continue
+			}
+            else{
+                valid = false;
+                printf("Failts at: row: %d, col: %d, ",i,j);
+                break;
+            }
 		}
 	}
 	
