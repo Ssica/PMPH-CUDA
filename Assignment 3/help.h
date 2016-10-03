@@ -30,7 +30,7 @@ bool validate(float* mat1, float* mat2, int rows, int cols, float eps) {
 		}
 	}
 	
-    return valid
+    return valid;
 }
 
 //initialize matrix

@@ -3,6 +3,7 @@
 #include "task1c.cu.h"
 #include "task1d.cu.h"
 #include "task2c.cu.h"
+
 #define ROWS 1024
 #define COLS 1024
 #define TILE 32
@@ -114,7 +115,7 @@ int main() {
 	init_mat(m1,size);
 	cudaMemcpy(d1,m1,mem_size,cudaMemcpyHostToDevice);
 	gettimeofday(&t_start,NULL);
-	task2d<<<grid,block>>>(d1,d2,num_threads);
+	task2c<<<grid,block>>>(d1,d2,num_threads);
 	cudaThreadSynchronize();
 	gettimeofday(&t_end,NULL);
 	timeval_subtract(&t_diff,&t_end,&t_start);
