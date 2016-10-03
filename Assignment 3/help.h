@@ -14,12 +14,12 @@ int timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval 
 }
 
 //used to validate the test run
-void validate(float* mat1, float* mat2, int rows, int cols, float eps) {
+void validate(float* mat1, float* mat2, int rows, int cols) {
 	bool valid = true;
 	for (int i = 0; i < rows; i++) {
 		if (!valid) { break; }
 		for (int j = 0; j < cols; j++) {
-			if (abs(mat1[i*cols+j] - mat2[i*cols+j]) > eps) {
+			if (abs(mat1[i*cols+j] - mat2[i*cols+j])) {
 				valid = false;
 				printf("Failts at: row: %d, col: %d, ",i,j);
 				break;
