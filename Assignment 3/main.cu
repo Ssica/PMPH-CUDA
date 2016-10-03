@@ -68,7 +68,7 @@ int main() {
 	cudaMemcpy(d1,m1,mem_size,cudaMemcpyHostToDevice);
 	gettimeofday(&t_start,NULL);
 
-	task1c_trans<float,TILE>(d1,d2,ROWS,COLS,1);
+	task1c_trans<float,TILE>(d1,d2,ROWS,COLS);
 
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
