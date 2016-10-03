@@ -14,7 +14,7 @@ void task1c_trans(float* in_, float* out_, int rows, int cols) {
 
 	dim3 block(tile,tile,1);
 	dim3 grid(dimx,dimy,1);
-	par_transpose<float><<<grid,block>>>(in_,out_,rows,cols);
+	task1c<float><<<grid,block>>>(in_,out_,rows,cols);
 	cudaThreadSynchronize();
 }
 
@@ -25,7 +25,7 @@ void task1d_trans(float* in_, float* out_, int rows, int cols) {
 
 	dim3 block(tile,tile,1);
 	dim3 grid(dimx,dimy,1);
-	par_tiled_transpose<float,tile><<<grid,block>>>(in_,out_,rows,cols);
+	task1d<float,tile><<<grid,block>>>(in_,out_,rows,cols);
 	cudaThreadSynchronize();
 }
 int main() {
