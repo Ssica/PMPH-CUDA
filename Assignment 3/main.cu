@@ -13,14 +13,7 @@ int main() {
 	float* h_C = (float*) malloc(mem_size);
 
 	srand(time(0));
-
-//initializes matrix with values
-	void init_matrix(float* data,int size) {
-		for (int i = 0; i < size; ++i) {
-			//inserts random values from 1-100
-			h_A[i] = (float)(rand()%100+1);
-		}
-	}
+  init_mat(h_A,size);
 
 	//SEQUENTIAL TRANSPOSE
 

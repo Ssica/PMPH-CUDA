@@ -31,3 +31,9 @@ void compare(float* mat1, float* mat2, int rows, int cols, float eps) {
 	else { printf("\n Result from test invalid\n"); }
 }
 
+//initialize matrix
+void init_mat(float* mat,int size) {
+    for (int i = 0; i < size; ++i) {
+        mat[i] = (float)(rand()%100+1);
+    }
+}
