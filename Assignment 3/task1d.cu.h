@@ -1,5 +1,5 @@
 template<class T, int TILE>
-__global__ void par_tiled_transpose(float* in_, float* out_, int rows, int cols) {
+__global__ void task1d(float* in_, float* out_, int rows, int cols) {
     
     __shared__ float tile[TILE][TILE+1];
     
