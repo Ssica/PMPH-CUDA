@@ -2,7 +2,7 @@
 #include "task1a.h"
 #include "task1c.cu.h"
 #include "task1d.cu.h"
-
+#include "task2d.cu.h"
 #define ROWS 1024
 #define COLS 1024
 #define TILE 32
@@ -104,7 +104,8 @@ int main() {
 
 	val = validate(m1,m3,ROWS,COLS, 0.01);
 	printf("Task1d transpose test: %d", val);
-	//TEST Task 2.c
+
+	printf("Task1a transpose test: %d", val);//TEST Task 2.c
 
 	int num_threads = (ROWS/64)*COLS;
 	int block = 256;
@@ -113,7 +114,7 @@ int main() {
 	init_mat(m1,size);
 	cudaMemcpy(d1,m1,mem_size,cudaMemcpyHostToDevice);
 	gettimeofday(&t_start,NULL);
-	orig_program<<<grid,block>>>(d1,d2,num_threads);
+	task2d<<<grid,block>>>(d1,d2,num_threads);
 	cudaThreadSynchronize();
 	gettimeofday(&t_end,NULL);
 	timeval_subtract(&t_diff,&t_end,&t_start);
