@@ -21,7 +21,7 @@ void validate(float* mat1, float* mat2, int rows, int cols) {
 		for (int j = 0; j < cols; j++) {
             
             printf("print mat1: %f", mat1[i*cols+j]);
-            printf("print mat2: %f", mat2[i*cols+j]);
+            printf("print mat2: %f", mat2[j*cols+i]);
 			//if (mat1[i*cols+j] == mat2[i*cols+j]) {
                 
                 //continue;
