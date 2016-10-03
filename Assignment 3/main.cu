@@ -2,7 +2,7 @@
 #include "task1a.h"
 #include "task1c.cu.h"
 #include "task1d.cu.h"
-#include "task2d.cu.h"
+#include "task2c.cu.h"
 #define ROWS 1024
 #define COLS 1024
 #define TILE 32
