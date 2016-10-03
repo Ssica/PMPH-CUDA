@@ -87,10 +87,8 @@ int main() {
 
 	init_mat(m1,size);
 
-	float* d1;
 	cudaMalloc((void**)&d1,mem_size);
 
-	float* d2;
 	cudaMalloc((void**)&d2,mem_size);
 
 	cudaMemcpy(d1,m1,mem_size,cudaMemcpyHostToDevice);
