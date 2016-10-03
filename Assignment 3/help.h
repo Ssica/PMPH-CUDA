@@ -14,7 +14,7 @@ int timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval 
 }
 
 //used to validate the test run
-void compare(float* mat1, float* mat2, int rows, int cols, float eps) {
+void validate(float* mat1, float* mat2, int rows, int cols, float eps) {
 	bool valid = true;
 	for (int i = 0; i < rows; i++) {
 		if (!valid) { break; }

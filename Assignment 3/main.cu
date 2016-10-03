@@ -32,6 +32,6 @@ int main() {
 	printf("Sequential transpose test: %lu microseconds.\n", elapsed);
 
 	printf("Sequential transpose test:\n");
-	compare<float>(h_A,h_B,ROWS,COLS,0.01);
+	validate<float>(h_A,h_B,ROWS,COLS,0.01);
 	return 0;
 }
