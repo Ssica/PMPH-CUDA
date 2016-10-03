@@ -13,7 +13,7 @@ int main() {
 	float* m3 = (float*) malloc(mem_size);
 
 	srand(time(0));
-  init_mat(h_A,size);
+  init_mat(m1,size);
 
 	//SEQUENTIAL TRANSPOSE
 
