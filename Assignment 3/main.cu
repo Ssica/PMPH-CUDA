@@ -8,9 +8,9 @@
 int main() {
 	size_t size = COLS * ROWS;
 	size_t mem_size = sizeof(float) * size;
-	float* h_A = (float*) malloc(mem_size);
-	float* h_B = (float*) malloc(mem_size);
-	float* h_C = (float*) malloc(mem_size);
+	float* m1 = (float*) malloc(mem_size);
+	float* m2 = (float*) malloc(mem_size);
+	float* m3 = (float*) malloc(mem_size);
 
 	srand(time(0));
   init_mat(h_A,size);
@@ -21,7 +21,7 @@ int main() {
 	struct timeval t_start,t_end,t_diff;
 	gettimeofday(&t_start, NULL);
 
-	task1a<float>(h_A,h_B,ROWS,COLS);
+	task1a<float>(m1,m2,ROWS,COLS);
 
 	gettimeofday(&t_end, NULL);
 
