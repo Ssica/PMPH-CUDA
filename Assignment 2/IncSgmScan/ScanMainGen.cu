@@ -202,8 +202,8 @@ void msspTest(){
   int* d_in;
   MyInt4* d_inplift;
   MyInt4* d_out;
-  MyInt4 h_(0,0,0,0);
-  MyInt4 *res = &h_;
+  MyInt4 res(0,0,0,0);
+  MyInt4 *res_ = &res;
 
   cudaMalloc((void**)&d_in,len*sizeof(int));
   cudaMalloc((void**)&d_inplift,mem_size);
@@ -225,7 +225,7 @@ void msspTest(){
   elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
   printf("mssp runs in: %d microseconds \n", elapsed);
 
-  if(h_.x == len) { printf("mssp: VALID.\n"); }
+  if(res.x == len) { printf("mssp: VALID.\n"); }
   else { printf("mssp: INVALID.\n"); }
 
 
