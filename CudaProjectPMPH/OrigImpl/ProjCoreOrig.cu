@@ -234,7 +234,7 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
                    &clist[ j*numX],&u[ j*numX],
                     numX,&u[j*numX],yy);
         }
-
+/*
     //	implicit y
         for(i=0;i<numX;i++) {
             for(j=0;j<numY;j++) {  // here a, b, c should have size [numY]
@@ -249,9 +249,9 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
             }
         }
 
-
+*/
         // here yy should have size [numY]
-      //  GPUimplicitY(globs, alist, blist, clist, g);
+        GPUimplicitY(globs, alist, blist, clist, g);
         for(i=0;i<numX;i++) {
             for(j=0;j<numY;j++) {
                 ylist[ i * numY + j] = dtInv*u[ + j * numX + i]
