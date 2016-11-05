@@ -191,9 +191,9 @@ int MsspTest(){
   int len = 9000;
   int mem_size = len*sizeof(MyInt4);
 
-  int num_blocks = ( (d_size % block_size) == 0) ?
-                    d_size / block_size     :
-                    d_size / block_size + 1 ;
+  int num_blocks = ( (len % block_size) == 0) ?
+                    len / block_size     :
+                    len / block_size + 1 ;
 
   int* h_in = (int*)malloc(len*sizeof(int));
   for(int i = 0; i < arr_len; i++) {
