@@ -3,7 +3,7 @@
 #include "TridagPar.h"
 #include "updateParamsKernels.cu.h"
 
-#define BLOCK_DIM 8
+#define BLOCK_DIM 32
 void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const unsigned g){
 
   unsigned int block_dim = BLOCK_DIM;
