@@ -187,8 +187,8 @@ int scanExclTest(bool is_segmented) {
 }
 
 void msspTest(){
-  int block_size = 512;
-  int len = 9000;
+  int block_size = 256;
+  int len = 8353455;
   int mem_size = len*sizeof(MyInt4);
 
   int num_blocks = ( (len % block_size) == 0) ?
@@ -226,6 +226,8 @@ void msspTest(){
 
   if(h_.x == len) { printf("mssp: VALID.\n"); }
   else { printf("mssp: INVALID.\n"); }
+
+
 }
 int main(int argc, char** argv) {
     scanIncTest(true);
