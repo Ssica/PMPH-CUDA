@@ -264,7 +264,7 @@ void GPUupdateParams(const unsigned g, const REAL alpha, const REAL beta,
 
 void GPUsetParams(PrivGlobs& globs)
 {
-    unsigned int block_dim = 8;
+    unsigned int block_dim = 32;
 
     dim3 threadsPerBlock(block_dim, block_dim, 1);
     dim3 num_blocks(ceil((float)globs.numX/block_dim), ceil((float)globs.numY/block_dim),globs.outer);
