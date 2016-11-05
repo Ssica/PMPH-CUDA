@@ -262,7 +262,7 @@ void GPUupdateParams(const unsigned g, const REAL alpha, const REAL beta,
 
 }
 
-void GPUsetParams(PrivGlobs& globs, numX, numY)
+void GPUsetParams(PrivGlobs& globs, const unsigned int numX, const unsigned int numY)
 {
     unsigned int block_dim = 8;
 
