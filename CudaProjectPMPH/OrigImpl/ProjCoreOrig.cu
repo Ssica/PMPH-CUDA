@@ -3,7 +3,7 @@
 #include "TridagPar.h"
 #include "updateParamsKernels.cu.h"
 
-void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist){
+void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const unsigned g){
 
   unsigned int block_dim = 8;
   unsigned int numZ = max(globs.numX, globs.numY);
@@ -194,7 +194,7 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
         // here yy should have size [numX]
         }
 */
-        GPUimplicitX(globs, alist, blist, clist);
+        GPUimplicitX(globs, alist, blist, clist, g);
         for(j=0;j<numY;j++) {
             tridag(&alist[ j*numX],&blist[ j*numX],
                    &clist[ j*numX],&u[ j*numX],
