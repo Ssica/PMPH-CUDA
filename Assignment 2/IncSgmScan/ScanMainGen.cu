@@ -187,8 +187,8 @@ int scanExclTest(bool is_segmented) {
 }
 
 void msspTest(){
-  int block_size = 256;
-  int len = 8353455;
+  int block_size = 512;
+  int len = 9000;
   int mem_size = len*sizeof(MyInt4);
 
   int num_blocks = ( (len % block_size) == 0) ?
@@ -207,6 +207,7 @@ void msspTest(){
 
   cudaMalloc((void**)&d_in,len*sizeof(int));
   cudaMalloc((void**)&d_inplift,mem_size);
+  cudaMalloc((void**)&d_out,mem_size);
 
   cudaMemcpy(d_in,h_in,len*sizeof(int),cudaMemcpyHostToDevice);
 
@@ -217,7 +218,7 @@ void msspTest(){
   cudaThreadSynchronize();
   scanInc<MsspOp,MyInt4>(block_size,len,d_inplift, d_out);
   cudaThreadSynchronize();
-  cudaMemcpy(&h_,d_out+len-1,sizeof(MyInt4),cudaMemcpyDeviceToHost);
+  cudaMemcpy(res,d_out+len-1,sizeof(MyInt4),cudaMemcpyDeviceToHost);
 
   gettimeofday(&t_end, NULL);
   timeval_subtract(&t_diff, &t_end, &t_start);
