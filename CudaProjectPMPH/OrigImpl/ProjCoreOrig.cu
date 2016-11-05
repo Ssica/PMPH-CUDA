@@ -209,7 +209,7 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
                                                *globs.myDyy[j * 4 + 2] )
                                                *globs.myResult[h * expand + i * numY + (j+1)];
                 }
-                u[ + j * numX + i] += v[ i * numY + j];
+                u[j * numX + i] += v[ i * numY + j];
             }
         }
 
