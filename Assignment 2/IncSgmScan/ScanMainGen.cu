@@ -186,7 +186,7 @@ int scanExclTest(bool is_segmented) {
     return 0;
 }
 
-int MsspTest(){
+void msspTest(){
   int block_size = 512;
   int len = 9000;
   int mem_size = len*sizeof(MyInt4);
@@ -232,4 +232,5 @@ int main(int argc, char** argv) {
     scanIncTest(false);
     scanExclTest(false);
     scanExclTest(true);
+    msspTest();
 }
