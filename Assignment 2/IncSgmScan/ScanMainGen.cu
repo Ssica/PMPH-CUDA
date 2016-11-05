@@ -218,9 +218,10 @@ void msspTest(){
   scanInc<MsspOp,MyInt4>(block_size,len,d_inplift,d_res);
   cudaThreadSynchronize();
   cudaMemcpy(res,d_out+len-1,sizeof(MyInt4),cudaMemcpyDeviceToHost);
-  unsigned long int elapsed;
-  struct timeval t_start, t_end, t_diff;
-  gettimeofday(&t_start, NULL);
+
+  gettimeofday(&t_end, NULL);
+  timeval_subtract(&t_diff, &t_end, &t_start);
+  elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec); 
   printf("mssp runs in: %d microseconds \n", elapsed);
 
   if(res.x == len) { printf("mssp: VALID.\n"); }
