@@ -315,7 +315,7 @@ void   run_OrigCPU(
     initOperator(globs.myY,globs.myDyy, numY);
 
     //setPayoff(globs);
-    GPUsetParams(globs, numX, numY);
+    GPUsetParams(globs);
     for(int h=0; h<outer; h++) {
         for(int i = numT-2;i>=0;--i)
         {
