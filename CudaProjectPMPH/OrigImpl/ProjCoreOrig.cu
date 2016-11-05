@@ -3,6 +3,39 @@
 #include "TridagPar.h"
 #include "updateParamsKernels.cu.h"
 
+void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist){
+
+  unsigned int block_dim = 8;
+  unsigned int numZ = max(globs.numX, globs.numY);
+  REAL dtInv = 1.0/(globs.myTimeline[g+1]-globs.myTimeline[g]);
+
+  dim3 threadsPerBlock(block_dim, block_dim, 1);
+  dim3 num_blocks(ceil((float)globs.numX/block_dim), ceil((float)globs.numY/block_dim));
+  REAL* d_myVarX, d_myDxx, d_alist, d_blist, d_clist;
+
+  cudaMalloc((void**)&d_myVarX, globs.numX*globs.numY*sizeof(REAL));
+  cudaMalloc((void**)&d_myDxx, globs.numX*4*sizeof(REAL));
+  cudaMalloc((void**)&d_alist, numZ*numZ*sizeof(REAL));
+  cudaMalloc((void**)&d_blist, numZ*numZ*sizeof(REAL));
+  cudaMalloc((void**)&d_clist, numZ*numZ*sizeof(REAL));
+
+  cudaMemcpy(d_myVarX, globs.myVarX, globs.numX*globs.numY*sizeof(REAL), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_myDxx, globs.myDxx, globs.numX*4*sizeof(REAL), cudaMemcpyHostToDevice);
+
+  implicitX<<<num_blocks, threadsPerBlock>>>(globs.numX, globs.numY, dtInv, d_myVarX, d_myDxx,
+                                             d_alist, d_blist, d_clist);
+  cudaMemcpy(alist, d_alist, numZ*numZ*sizeof(REAL), cudaMemcpyDeviceToHost);
+  cudaMemcpy(blist, d_blist, numZ*numZ*sizeof(REAL), cudaMemcpyDeviceToHost);
+  cudaMemcpy(clist, d_clist, numZ*numZ*sizeof(REAL), cudaMemcpyDeviceToHost);
+
+  cudaFree(d_myVarX);
+  cudaFree(d_myDxx);
+  cudaFree(d_alist);
+  cudaFree(d_blist);
+  cudaFree(d_clist);
+
+}
+
 void updateParams(const unsigned g, const REAL alpha, const REAL beta, const REAL nu, PrivGlobs& globs)
 {
         for(unsigned i=0;i<globs.numX;++i)
@@ -146,7 +179,7 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
             }
         }
 
-
+/*
     //	implicit x
         for(j=0;j<numY;j++) {
             for(i=0;i<numX;i++) {  // here a,b,c should have size [numX]
@@ -160,7 +193,8 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
         //tridagPar(alist[j],blist[j],clist[j],u[j],numX,u[j],yy);
         // here yy should have size [numX]
         }
-
+*/
+        GPUimplicitX(globs, alist, blist, clist);
         for(j=0;j<numY;j++) {
             tridag(&alist[ j*numX],&blist[ j*numX],
                    &clist[ j*numX],&u[ j*numX],

@@ -43,4 +43,14 @@ __global__ void setParamsKer(const unsigned int numX, const unsigned int numY, R
 
 }
 
+__global__ void implicitX(const unsigned int numX, const unsigned int numX, const REAL dtInv,
+                          REAL* d_myVarX, REAL* d_myDxx, REAL* alist, REAL* blist, REAL* clist){
+
+    unsigned int i = blockIdx.x*blockDim.x+threadIdx.x;
+    unsigned int j = blockIdx.y*blockDim.y+threadIdx.y;
+    
+    alist[ j * numX + i] = - 0.5*(0.5* d_myVarX[ i * numY + j]*d_myDxx[i * 4 + 0]);
+    blist[ j * numX + i] = dtInv - 0.5*(0.5*d_myVarX[i * numY + j]*d_myDxx[i * 4 + 1]);
+    clist[ j * numX + i] = - 0.5*(0.5*d_myVarX[i * numY + j]*d_myDxx[i * 4 + 2]);
+}
 #endif
