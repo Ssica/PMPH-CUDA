@@ -156,7 +156,7 @@ int main() {
   float* m1_ = (float*) malloc(mem_size1);
 	float* m2_ = (float*) malloc(mem_size2);
 	float* m3_ = (float*) malloc(mem_size1);
-	float* res_ = (float*) malloc(mem_size1);
+	float* res_ = (float*) malloc(res_mem);
 	init_mat(m1_, row1);
 	init_mat(m2_, row2);
 
@@ -181,13 +181,13 @@ int main() {
 
 	gettimeofday(&t_start,NULL);
 
-//	task3c<float><<<grid,block>>>(d_m1,d_m2,d_res,row1,col1,col2);
+	task3c<float><<<grid,block>>>(d_m1,d_m2,d_res,row1,col1,col2);
 
 	gettimeofday(&t_end,NULL);
 	timeval_subtract(&t_diff,&t_end,&t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
 
-  //cudaMemcpy(res_,d_res,res_mem,cudaMemcpyDeviceToHost);
+  cudaMemcpy(res_,d_res,res_mem,cudaMemcpyDeviceToHost);
   //val = validate(m1_,m3_,row1,col2, 0.01);
 	printf("Task3c matrix mult test: %d", val);
 	cudaFree(m1);
