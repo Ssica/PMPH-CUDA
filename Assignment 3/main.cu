@@ -59,7 +59,7 @@ int main() {
 	printf("Task1a transpose test: %lu microseconds.\n", elapsed);
 
 	val = validate(m1,m2,ROWS,COLS, 0.01);
-	printf("Task1a transpose test: %d", val);
+	printf("Task1a transpose test: %d \n", val);
 	//TEST TASK 1.c
 
 	init_mat(m1,size);
@@ -84,7 +84,7 @@ int main() {
 	printf("Task1c transpose test: %lu microseconds.\n", elapsed);
 
 	val = validate(m1,m3,ROWS,COLS, 0.01);
-	printf("Task1c transpose test: %d", val);
+	printf("Task1c transpose test: %d \n", val);
 
 	//TEST TASK 1.d
 
