@@ -213,7 +213,7 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
             }
         }
 
-/*
+
     //	implicit x
         for(j=0;j<numY;j++) {
             for(i=0;i<numX;i++) {  // here a,b,c should have size [numX]
@@ -227,14 +227,14 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
         //tridagPar(alist[j],blist[j],clist[j],u[j],numX,u[j],yy);
         // here yy should have size [numX]
         }
-*/
-        GPUimplicitX(globs, alist, blist, clist, g);
+
+        //GPUimplicitX(globs, alist, blist, clist, g);
         for(j=0;j<numY;j++) {
             tridag(&alist[ j*numX],&blist[ j*numX],
                    &clist[ j*numX],&u[ j*numX],
                     numX,&u[j*numX],yy);
         }
-/*
+
     //	implicit y
         for(i=0;i<numX;i++) {
             for(j=0;j<numY;j++) {  // here a, b, c should have size [numY]
@@ -248,10 +248,10 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
                                                   *globs.myDyy[j * 4 + 2]);
             }
         }
-        */
+
 
         // here yy should have size [numY]
-        GPUimplicitY(globs, alist, blist, clist, g);
+      //  GPUimplicitY(globs, alist, blist, clist, g);
         for(i=0;i<numX;i++) {
             for(j=0;j<numY;j++) {
                 ylist[ i * numY + j] = dtInv*u[ + j * numX + i]
