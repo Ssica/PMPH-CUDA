@@ -11,7 +11,7 @@ void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const
 
   dim3 threadsPerBlock(block_dim, block_dim, 1);
   dim3 num_blocks(ceil((float)globs.numX/block_dim), ceil((float)globs.numY/block_dim));
-  REAL* d_myVarX, d_myDxx, d_alist, d_blist, d_clist;
+  REAL* d_myVarX, *d_myDxx, *d_alist, *d_blist, *d_clist;
 
   cudaMalloc((void**)&d_myVarX, globs.numX*globs.numY*sizeof(REAL));
   cudaMalloc((void**)&d_myDxx, globs.numX*4*sizeof(REAL));
