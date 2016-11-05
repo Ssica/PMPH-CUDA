@@ -262,7 +262,7 @@ void GPUupdateParams(const unsigned g, const REAL alpha, const REAL beta,
 
 }
 
-void GPUsetParams(PrivGlobs& globs, const unsigned int numX, const unsigned int numY)
+void GPUsetParams(PrivGlobs& globs)
 {
     unsigned int block_dim = 8;
 
@@ -276,7 +276,7 @@ void GPUsetParams(PrivGlobs& globs, const unsigned int numX, const unsigned int 
     cudaMemcpy(d_myResult, globs.myResult, globs.outer*globs.numX*globs.numY*sizeof(REAL), cudaMemcpyHostToDevice);
     cudaMemcpy(d_myX, globs.myX, globs.numX*sizeof(REAL), cudaMemcpyHostToDevice);
 
-    setParamsKer<<<num_blocks, threadsPerBlock>>>(numX, numY, d_myX, d_myResult, block_dim);
+    setParamsKer<<<num_blocks, threadsPerBlock>>>(globs.numX, globs.numY, d_myX, d_myResult);
 
     cudaThreadSynchronize();
 
