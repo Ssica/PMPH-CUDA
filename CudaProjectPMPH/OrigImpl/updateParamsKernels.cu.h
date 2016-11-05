@@ -60,8 +60,8 @@ __global__ void implicitY(const unsigned int numX, const unsigned int numY, cons
     unsigned int i = blockIdx.x*blockDim.x+threadIdx.x;
     unsigned int j = blockIdx.y*blockDim.y+threadIdx.y;
     
-    alist[ i * numY + j] = - 0.5*(0.5*globs.myVarY[i * numY + j]*globs.myDyy[j * 4 + 0]);
-    blist[ i * numY + j] = dtInv - 0.5*(0.5*globs.myVarY[i * numY + j]*globs.myDyy[j * 4 + 1]);
-    clist[ i * numY + j] = - 0.5*(0.5*globs.myVarY[i * numY + j]*globs.myDyy[j * 4 + 2]);
+    alist[ i * numY + j] = - 0.5*(0.5*d_myVarY[i * numY + j]*d_myDyy[j * 4 + 0]);
+    blist[ i * numY + j] = dtInv - 0.5*(0.5*d_myVarY[i * numY + j]*d_myDyy[j * 4 + 1]);
+    clist[ i * numY + j] = - 0.5*(0.5*d_myVarY[i * numY + j]*d_myDyy[j * 4 + 2]);
 }
 #endif
