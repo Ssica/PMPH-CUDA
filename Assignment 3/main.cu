@@ -153,11 +153,12 @@ int main() {
 	int mem_size1 = row1*col1*sizeof(float);
 	int mem_size2 = row2*col2*sizeof(float);
 
-  float* m1 = (float*) malloc(mem_size1);
-	float* m2 = (float*) mallic(mem_size2);
-	float* m3 = (float*) mallic(mem_size1);
-	init_mat(m1, row1);
-	init_mat(m2, row2);
+  float* m1_ = (float*) malloc(mem_size1);
+	float* m2_ = (float*) malloc(mem_size2);
+	float* m3_ = (float*) malloc(mem_size1);
+	float* res_ = (float*) malloc(mem_size1);
+	init_mat(m1_, row1);
+	init_mat(m2_, row2);
 
 	float* d_m1;
 	float* d_m2;
@@ -167,12 +168,12 @@ int main() {
 	cudaMalloc((void**)&d_m2,mem_size2);
 	cudaMalloc((void**)&d_res,res_mem);
 
-	cudaMemcpy(d_m1,m1,mem_size1,cudaMemcpyHostToDevice);
-	cudaMemcpy(d_m2,m2,mem_size2,cudaMemcpyHostToDevice);
+	cudaMemcpy(d_m1,m1_,mem_size1,cudaMemcpyHostToDevice);
+	cudaMemcpy(d_m2,m2_,mem_size2,cudaMemcpyHostToDevice);
 
 	gettimeofday(&t_start,NULL);
 
-	m3 = task3a(m1,m2,row1,col1,col2);
+	m3_ = task3a(m1_,m2_,row1,col1,col2);
 
 	gettimeofday(&t_end,NULL);
 	timeval_subtract(&t_diff,&t_end,&t_start);
@@ -186,8 +187,8 @@ int main() {
 	timeval_subtract(&t_diff,&t_end,&t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
 
-  cudaMemcpy(m3,d_res,res_mem,cudaMemcpyDeviceToHost);
-  val = validate(m1,m3,row1,col2, 0.01);
+  cudaMemcpy(res_,d_res,res_mem,cudaMemcpyDeviceToHost);
+  val = validate(m1_,m3_,row1,col2, 0.01);
 	printf("Task3c matrix mult test: %d", val);
 	cudaFree(m1);
 	cudaFree(m2);
