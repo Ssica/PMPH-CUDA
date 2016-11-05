@@ -53,7 +53,7 @@ void GPUimplicitY(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const
   cudaMalloc((void**)&d_clist, numZ*numZ*sizeof(REAL));
 
   cudaMemcpy(d_myVarY, globs.myVarY, globs.numX*globs.numY*sizeof(REAL), cudaMemcpyHostToDevice);
-  cudaMemcpy(d_myDyy, globs.myDyy, globs.numX*4*sizeof(REAL), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_myDyy, globs.myDyy, globs.numY*4*sizeof(REAL), cudaMemcpyHostToDevice);
 
   implicitY<<<num_blocks, threadsPerBlock>>>(globs.numX, globs.numY, dtInv, d_myVarY, d_myDyy,
                                              d_alist, d_blist, d_clist);
