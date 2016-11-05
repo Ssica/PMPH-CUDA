@@ -191,10 +191,19 @@ int main() {
 	printf("Task 3c: %lu microseconds.\n", elapsed);
   val = validate(m3_,m1_,row1,col2, 0.01);
 	printf("Task3c matrix mult test: %d \n", val);
+
+	free(m1_);
+	free(m2_);
+	free(m3_);
+	free(res_);
 	cudaFree(m1);
 	cudaFree(m2);
 	cudaFree(m3);
 	cudaFree(d1);
 	cudaFree(d2);
+	cudaFree(d_m1);
+	cudaFree(d_m2);
+	cudaFree(d_res);
+
 	return 0;
 }
