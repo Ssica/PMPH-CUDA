@@ -180,14 +180,14 @@ int main() {
 
 	gettimeofday(&t_start,NULL);
 
-	naive_matmult<float><<<grid,block>>>(d_m1,d_m2,d_res,row1,col1,col2);
+	task3c<float><<<grid,block>>>(d_m1,d_m2,d_res,row1,col1,col2);
 
 	gettimeofday(&t_end,NULL);
 	timeval_subtract(&t_diff,&t_end,&t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
 
   cudaMemcpy(m3,d_res,res_mem,cudaMemcpyDeviceToHost);
-  val = validate(m1,m3,rows1,cols2, 0.01);
+  val = validate(m1,m3,row1,col2, 0.01);
 	printf("Task3c matrix mult test: %d", val);
 	cudaFree(m1);
 	cudaFree(m2);
