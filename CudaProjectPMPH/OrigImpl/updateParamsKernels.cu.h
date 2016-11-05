@@ -32,5 +32,15 @@ __global__ void updateParamsKer(const unsigned g, const REAL alpha, const REAL b
 }
 
 
+__global__ void setParamsKer(REAL d_numX ,REAL d_numY, REAL* d_myX, REAL* d_myResult)
+{
+    unsigned int i = blockIdx.x*blockDim.x+threadIdx.x;
+    unsigned int j = blockIdx.y*blockDim.y+threadIdx.y;
+    unsigned int outerIdx = blockIdx.z;
+    
+    d_myResult[outerIdx * d_numX * d_numY + i * d_numY + j] =
+                                    max(d_myX[i]-0.001*outerIdx, (REAL)0.0);
+
+}
 
 #endif
