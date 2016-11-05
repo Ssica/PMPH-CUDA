@@ -1,4 +1,4 @@
-__global__ void task2c(float* A, float* B, int N) {
+__global__ void task2d(float* A, float* B, int N) {
     int gid = blockIdx.x * blockDim.x + threadIdx.x;
     
     bool t= true;
