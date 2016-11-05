@@ -269,7 +269,7 @@ void GPUsetParams(PrivGlobs& globs)
     dim3 threadsPerBlock(block_dim, block_dim, 1);
     dim3 num_blocks(ceil((float)globs.numX/block_dim), ceil((float)globs.numY/block_dim),globs.outer);
 
-    *d_myX, *d_myResult;
+    REAL *d_myX, *d_myResult;
     cudaMalloc((void**)&d_myResult, globs.outer*globs.numX*globs.numY*sizeof(REAL));
     cudaMalloc((void**)&d_myX, globs.numX*sizeof(REAL));
 
