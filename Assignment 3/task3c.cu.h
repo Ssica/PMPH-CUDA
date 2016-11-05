@@ -6,7 +6,7 @@ __global__ void task3c(float* m1, float*m2, float* m_out, int row1, int col1, in
     if ((i < col2) && (j < row1)) {
         T res = 0;
         for(int k = 0; k < col1; k++) {
-            res = res + A[j*col1+k] * B[k*col2+i];
+            res = res + m1[j*col1+k] * m2[k*col2+i];
             }
         res[j*cols2+i] = res;
         }
