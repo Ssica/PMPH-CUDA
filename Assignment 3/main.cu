@@ -129,10 +129,6 @@ int main() {
 
 	//TEST Task 2.d
 
-	int num_threads = (ROWS/64)*COLS;
-	int block = 256;
-	int grid = num_threads / block;
-
 	init_mat(m1,size);
 	cudaMemcpy(d1,m1,mem_size,cudaMemcpyHostToDevice);
 	gettimeofday(&t_start,NULL);
