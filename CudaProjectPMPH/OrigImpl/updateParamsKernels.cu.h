@@ -40,7 +40,7 @@ __global__ void setParamsKer(const REAL numX, const REAL numY, REAL* myX, REAL* 
     unsigned int j = block_dim*blockDim.y+threadIdx.y;
     unsigned int h = blockIdx.z;
     
-    myResult[h * 0 * 0 + i * 0 + j] = (REAL) max(myX[i]-0.001*h, (REAL)0.0);
+    myResult[h * numX * numY + i * numY + j] = (REAL) max(myX[i]-0.001*h, (REAL)0.0);
 
 }
 
