@@ -33,7 +33,7 @@ __global__ void updateParamsKer(const unsigned g, const REAL alpha, const REAL b
 }
 
 
-__global__ void setParamsKer(REAL numX, REAL numY, REAL* myX, REAL* myResult)
+__global__ void setParamsKer(const REAL numX, const REAL numY, REAL* myX, REAL* myResult)
 {
     unsigned int i = blockIdx.x*blockDim.x+threadIdx.x;
     unsigned int j = blockIdx.y*blockDim.y+threadIdx.y;
