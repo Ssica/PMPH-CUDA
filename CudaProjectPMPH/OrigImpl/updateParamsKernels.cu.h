@@ -53,4 +53,15 @@ __global__ void implicitX(const unsigned int numX, const unsigned int numY, cons
     blist[ j * numX + i] = dtInv - 0.5*(0.5*d_myVarX[i * numY + j]*d_myDxx[i * 4 + 1]);
     clist[ j * numX + i] = - 0.5*(0.5*d_myVarX[i * numY + j]*d_myDxx[i * 4 + 2]);
 }
+
+__global__ void implicitY(const unsigned int numX, const unsigned int numY, const REAL dtInv,
+                          REAL* d_myVarY, REAL* d_myDyy, REAL* alist, REAL* blist, REAL* clist){
+    
+    unsigned int i = blockIdx.x*blockDim.x+threadIdx.x;
+    unsigned int j = blockIdx.y*blockDim.y+threadIdx.y;
+    
+    alist[ i * numY + j] = - 0.5*(0.5*globs.myVarY[i * numY + j]*globs.myDyy[j * 4 + 0]);
+    blist[ i * numY + j] = dtInv - 0.5*(0.5*globs.myVarY[i * numY + j]*globs.myDyy[j * 4 + 1]);
+    clist[ i * numY + j] = - 0.5*(0.5*globs.myVarY[i * numY + j]*globs.myDyy[j * 4 + 2]);
+}
 #endif

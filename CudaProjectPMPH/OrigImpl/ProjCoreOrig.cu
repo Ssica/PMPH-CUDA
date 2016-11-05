@@ -36,6 +36,39 @@ void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const
 
 }
 
+void GPUimplicitY(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const unsigned g){
+
+  unsigned int block_dim = 8;
+  unsigned int numZ = max(globs.numX, globs.numY);
+  REAL dtInv = 1.0/(globs.myTimeline[g+1]-globs.myTimeline[g]);
+
+  dim3 threadsPerBlock(block_dim, block_dim, 1);
+  dim3 num_blocks(ceil((float)globs.numX/block_dim), ceil((float)globs.numY/block_dim));
+  REAL* d_myVarY, *d_myDyy, *d_alist, *d_blist, *d_clist;
+
+  cudaMalloc((void**)&d_myVarY, globs.numX*globs.numY*sizeof(REAL));
+  cudaMalloc((void**)&d_myDyy, globs.numY*4*sizeof(REAL));
+  cudaMalloc((void**)&d_alist, numZ*numZ*sizeof(REAL));
+  cudaMalloc((void**)&d_blist, numZ*numZ*sizeof(REAL));
+  cudaMalloc((void**)&d_clist, numZ*numZ*sizeof(REAL));
+
+  cudaMemcpy(d_myVarY, globs.myVarY, globs.numX*globs.numY*sizeof(REAL), cudaMemcpyHostToDevice);
+  cudaMemcpy(d_myDyy, globs.myDyy, globs.numX*4*sizeof(REAL), cudaMemcpyHostToDevice);
+
+  implicitY<<<num_blocks, threadsPerBlock>>>(globs.numX, globs.numY, dtInv, d_myVarY, d_myDyy,
+                                             d_alist, d_blist, d_clist);
+  cudaMemcpy(alist, d_alist, numZ*numZ*sizeof(REAL), cudaMemcpyDeviceToHost);
+  cudaMemcpy(blist, d_blist, numZ*numZ*sizeof(REAL), cudaMemcpyDeviceToHost);
+  cudaMemcpy(clist, d_clist, numZ*numZ*sizeof(REAL), cudaMemcpyDeviceToHost);
+
+  cudaFree(d_myVarY);
+  cudaFree(d_myDyy);
+  cudaFree(d_alist);
+  cudaFree(d_blist);
+  cudaFree(d_clist);
+
+}
+
 void updateParams(const unsigned g, const REAL alpha, const REAL beta, const REAL nu, PrivGlobs& globs)
 {
         for(unsigned i=0;i<globs.numX;++i)
@@ -200,7 +233,7 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
                    &clist[ j*numX],&u[ j*numX],
                     numX,&u[j*numX],yy);
         }
-
+/*
     //	implicit y
         for(i=0;i<numX;i++) {
             for(j=0;j<numY;j++) {  // here a, b, c should have size [numY]
@@ -214,8 +247,10 @@ rollback( const unsigned g, const unsigned h, PrivGlobs& globs) {
                                                   *globs.myDyy[j * 4 + 2]);
             }
         }
-        // here yy should have size [numY]
+        */
 
+        // here yy should have size [numY]
+        GPUimplicitY(globs, alist, blist, clist, g);
         for(i=0;i<numX;i++) {
             for(j=0;j<numY;j++) {
                 ylist[ i * numY + j] = dtInv*u[ + j * numX + i]
