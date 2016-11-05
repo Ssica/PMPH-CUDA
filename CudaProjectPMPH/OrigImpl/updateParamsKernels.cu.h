@@ -2,7 +2,7 @@
 #define PROJ_KERS
 
 #include "Constants.h"
-#include "ProjHelperFun.cu.h"
+#include "ProjHelperFun.h"
 
 __global__ void updateParamsKer(const unsigned g, const REAL alpha, const REAL beta, const REAL nu,
                                 unsigned int d_numX, unsigned int d_numY, 
