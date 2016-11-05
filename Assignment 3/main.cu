@@ -170,8 +170,6 @@ int main() {
 	cudaMemcpy(d_m1,m1,mem_size1,cudaMemcpyHostToDevice);
 	cudaMemcpy(d_m2,m2,mem_size2,cudaMemcpyHostToDevice);
 
-	unsigned long int elapsed;
-	struct timeval t_start,t_end,t_diff;
 	gettimeofday(&t_start,NULL);
 
 	m3 = task3a(m1,m2,row1,col1,col2);
@@ -180,8 +178,6 @@ int main() {
 	timeval_subtract(&t_diff,&t_end,&t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
 
-	unsigned long int elapsed;
-	struct timeval t_start,t_end,t_diff;
 	gettimeofday(&t_start,NULL);
 
 	naive_matmult<float><<<grid,block>>>(d_m1,d_m2,d_res,row1,col1,col2);
