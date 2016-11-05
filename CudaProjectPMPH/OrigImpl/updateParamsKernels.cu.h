@@ -43,7 +43,7 @@ __global__ void setParamsKer(const unsigned int numX, const unsigned int numY, R
 
 }
 
-__global__ void implicitX(const unsigned int numX, const unsigned int numX, const REAL dtInv,
+__global__ void implicitX(const unsigned int numX, const unsigned int numY, const REAL dtInv,
                           REAL* d_myVarX, REAL* d_myDxx, REAL* alist, REAL* blist, REAL* clist){
 
     unsigned int i = blockIdx.x*blockDim.x+threadIdx.x;
