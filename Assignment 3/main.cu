@@ -5,6 +5,7 @@
 #include "task2c.cu.h"
 #include "task2d.cu.h"
 #include "task3a.h"
+#include "task3c.cu.h"
 
 #define ROWS 1024
 #define COLS 1024
