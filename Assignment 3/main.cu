@@ -188,7 +188,7 @@ int main() {
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
 
   cudaMemcpy(res_,d_res,res_mem,cudaMemcpyDeviceToHost);
-	printf("Task 3d: %lu microseconds.\n", elapsed);
+	printf("Task 3c: %lu microseconds.\n", elapsed);
   val = validate(m3_,res_,row1,col2, 0.01);
 	printf("Task3c matrix mult test: %d \n", val);
 	cudaFree(m1);
