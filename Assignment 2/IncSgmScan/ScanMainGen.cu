@@ -218,7 +218,7 @@ void msspTest(){
   cudaThreadSynchronize();
   scanInc<MsspOp,MyInt4>(block_size,len,d_inplift, d_out);
   cudaThreadSynchronize();
-  cudaMemcpy(res,d_out+len-1,sizeof(MyInt4),cudaMemcpyDeviceToHost);
+  cudaMemcpy(res_,d_out+len-1,sizeof(MyInt4),cudaMemcpyDeviceToHost);
 
   gettimeofday(&t_end, NULL);
   timeval_subtract(&t_diff, &t_end, &t_start);
