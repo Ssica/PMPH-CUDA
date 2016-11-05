@@ -5,7 +5,7 @@
 
 void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const unsigned g){
 
-  unsigned int block_dim = 8;
+  unsigned int block_dim = 32;
   unsigned int numZ = max(globs.numX, globs.numY);
   REAL dtInv = 1.0/(globs.myTimeline[g+1]-globs.myTimeline[g]);
 
