@@ -3,9 +3,10 @@
 #include "TridagPar.h"
 #include "updateParamsKernels.cu.h"
 
-#define block_dim = 8
+#define BLOCK_DIM 8
 void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const unsigned g){
 
+  unsigned int block_dim = BLOCK_DIM;
   unsigned int numZ = max(globs.numX, globs.numY);
   REAL dtInv = 1.0/(globs.myTimeline[g+1]-globs.myTimeline[g]);
 
@@ -38,6 +39,7 @@ void GPUimplicitX(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const
 
 void GPUimplicitY(PrivGlobs& globs, REAL* alist, REAL* blist, REAL* clist, const unsigned g){
 
+  unsigned int block_dim = BLOCK_DIM;
   unsigned int numZ = max(globs.numX, globs.numY);
   REAL dtInv = 1.0/(globs.myTimeline[g+1]-globs.myTimeline[g]);
 
@@ -294,6 +296,7 @@ void GPUupdateParams(const unsigned g, const REAL alpha, const REAL beta,
                                          const REAL nu, PrivGlobs& globs)
 {
 
+    unsigned int block_dim = BLOCK_DIM;
     dim3 threadsPerBlock(block_dim, block_dim, 1);
     dim3 num_blocks(ceil((float)globs.numX/block_dim), ceil((float)globs.numY/block_dim),1);
 
@@ -332,6 +335,7 @@ void GPUupdateParams(const unsigned g, const REAL alpha, const REAL beta,
 void GPUsetParams(PrivGlobs& globs)
 {
 
+    unsigned int block_dim = BLOCK_DIM;
     dim3 threadsPerBlock(block_dim, block_dim, 1);
     dim3 num_blocks(ceil((float)globs.numX/block_dim), ceil((float)globs.numY/block_dim),globs.outer);
 
