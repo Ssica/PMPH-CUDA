@@ -186,10 +186,55 @@ int scanExclTest(bool is_segmented) {
     return 0;
 }
 
+void msspTest(){
+  int block_size = 512;
+  int len = 9000;
+  int mem_size = len*sizeof(MyInt4);
+
+  int num_blocks = ( (len % block_size) == 0) ?
+                    len / block_size     :
+                    len / block_size + 1 ;
+
+  int* h_in = (int*)malloc(len*sizeof(int));
+  for(int i = 0; i < len; i++) {
+          h_in[i] = 1;
+    }
+  int* d_in;
+  MyInt4* d_inplift;
+  MyInt4* d_out;
+  MyInt4 res(0,0,0,0);
+  MyInt4 *res_ = &res;
+
+  cudaMalloc((void**)&d_in,len*sizeof(int));
+  cudaMalloc((void**)&d_inplift,mem_size);
+  cudaMalloc((void**)&d_out,mem_size);
+
+  cudaMemcpy(d_in,h_in,len*sizeof(int),cudaMemcpyHostToDevice);
+
+  unsigned long int elapsed;
+  struct timeval t_start, t_end, t_diff;
+  gettimeofday(&t_start, NULL);
+  msspTrivialMap<<<num_blocks,block_size>>>(d_in,d_inplift,len);
+  cudaThreadSynchronize();
+  scanInc<MsspOp,MyInt4>(block_size,len,d_inplift, d_out);
+  cudaThreadSynchronize();
+  cudaMemcpy(res_,d_out+len-1,sizeof(MyInt4),cudaMemcpyDeviceToHost);
+
+  gettimeofday(&t_end, NULL);
+  timeval_subtract(&t_diff, &t_end, &t_start);
+  elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
+  printf("mssp runs in: %d microseconds \n", elapsed);
+
+  if(res.x == len) { printf("mssp: VALID.\n"); }
+  else { printf("mssp: INVALID.\n"); }
+
+
+}
 int main(int argc, char** argv) {
     scanIncTest(true);
     scanIncTest(true);
     scanIncTest(false);
     scanExclTest(false);
     scanExclTest(true);
+    msspTest();
 }
