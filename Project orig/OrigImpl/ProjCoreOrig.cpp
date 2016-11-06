@@ -4,6 +4,7 @@
 
 void updateParams(const unsigned g, const REAL alpha, const REAL beta, const REAL nu, PrivGlobs& globs)
 {
+    #pragma omp parallel for default(shared) schedule(static)
     for(unsigned i=0;i<globs.myX.size();++i)
         for(unsigned j=0;j<globs.myY.size();++j) {
             globs.myVarX[i][j] = exp(2.0*(  beta*log(globs.myX[i])   
@@ -19,6 +20,7 @@ void updateParams(const unsigned g, const REAL alpha, const REAL beta, const REA
 
 void setPayoff(const REAL strike, PrivGlobs& globs )
 {
+        #pragma omp parallel for default(shared) schedule(static)
 	for(unsigned i=0;i<globs.myX.size();++i)
 	{
 		REAL payoff = max(globs.myX[i]-strike, (REAL)0.0);
@@ -82,6 +84,7 @@ rollback( const unsigned g, PrivGlobs& globs ) {
     vector<REAL> yy(numZ);  // temporary used in tridag  // [max(numX,numY)]
 
     //	explicit x
+    #pragma omp parallel for default(shared) schedule(static)
     for(i=0;i<numX;i++) {
         for(j=0;j<numY;j++) {
             u[j][i] = dtInv*globs.myResult[i][j];
@@ -100,6 +103,7 @@ rollback( const unsigned g, PrivGlobs& globs ) {
     }
 
     //	explicit y
+    #pragma omp parallel for default(shared) schedule(static)
     for(j=0;j<numY;j++)
     {
         for(i=0;i<numX;i++) {
@@ -120,6 +124,7 @@ rollback( const unsigned g, PrivGlobs& globs ) {
     }
 
     //	implicit x
+    #pragma omp parallel for default(shared) schedule(static) 
     for(j=0;j<numY;j++) {
         for(i=0;i<numX;i++) {  // here a, b,c should have size [numX]
             a[i] =		 - 0.5*(0.5*globs.myVarX[i][j]*globs.myDxx[i][0]);
@@ -131,6 +136,7 @@ rollback( const unsigned g, PrivGlobs& globs ) {
     }
 
     //	implicit y
+    #pragma omp parallel for default(shared) schedule(static)
     for(i=0;i<numX;i++) { 
         for(j=0;j<numY;j++) {  // here a, b, c should have size [numY]
             a[j] =		 - 0.5*(0.5*globs.myVarY[i][j]*globs.myDyy[j][0]);
@@ -183,10 +189,12 @@ void   run_OrigCPU(
                 const REAL&           beta,
                       REAL*           res   // [outer] RESULT
 ) {
-    REAL strike;
-    PrivGlobs    globs(numX, numY, numT);
-
+   
+    #pragma omp parallel for default(shared) schedule(static)
     for( unsigned i = 0; i < outer; ++ i ) {
+        REAL strike;
+        PrivGlobs    globs(numX, numY, numT);
+
         strike = 0.001*i;
         res[i] = value( globs, s0, strike, t,
                         alpha, nu,    beta,
